@@ -1,0 +1,47 @@
+
+!---------------------------------------------------------------
+!
+! Device: 	R2
+! Date:   	01 August, 2019
+! Version:	1
+!
+! Note:		This is the initial configuration for R2 - it provides SSH, etc.
+!
+!---------------------------------------------------------------
+!
+enable
+configure terminal
+!
+hostname R2
+!
+ip domain-name cisco.com
+!
+crypto key generate rsa 
+1024
+!
+username paddy privilege 15 secret paddy
+username admin privilege 15 secret admin
+username cisco privilege 15 secret class
+username root privilege 15 secret root
+!
+ip ssh version 2
+ip ssh time-out 120
+!
+interface GigabitEthernet 0/0
+   description <<< To Switch >>>
+   ip address 192.168.198.11 255.255.255.0
+   no shutdown
+!
+line console 0
+  exec-timeout 0 0
+  logging synchronous
+  login local
+!
+line vty 0 4
+  exec-timeout 0 0
+  logging synchronous
+  transport input telnet ssh
+  login local
+!
+end
+wr
